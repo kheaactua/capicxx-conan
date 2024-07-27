@@ -1,0 +1,8 @@
+patches:
+  "3.2.3r7":
+    - patch_file: "patches/3.2.3r7-string_include.patch"
+      patch_description: "Fix missing string include"
+      patch_type: "conan"
+    - patch_file: "patches/3.2.3r7-sanitizers.patch"
+      patch_description: "Include CMake sanitizers"
+      patch_type: "conan"

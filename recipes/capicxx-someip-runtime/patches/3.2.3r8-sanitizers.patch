@@ -1,0 +1,42 @@
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index 22fa95e..6d55b2a 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -7,7 +7,7 @@ cmake_minimum_required (VERSION 2.8)
+ 
+ project (CommonAPI-SomeIP)
+ 
+-set (CMAKE_VERBOSE_MAKEFILE off)
++find_package(Threads)
+ 
+ set (LIBCOMMONAPI_SOMEIP_MAJOR_VERSION 3)
+ set (LIBCOMMONAPI_SOMEIP_MINOR_VERSION 2)
+@@ -47,6 +47,9 @@ if(NOT CMAKE_BUILD_TYPE)
+   set_property(CACHE CMAKE_BUILD_TYPE PROPERTY STRINGS "Debug" "Release" "MinSizeRel" "RelWithDebInfo")
+ endif()
+ 
++# Sanitizer
++include(ECMEnableSanitizers OPTIONAL)
++
+ if (MSVC)
+ # Boost
+ find_package( Boost 1.55 COMPONENTS system thread log REQUIRED )
+@@ -66,7 +69,8 @@ include_directories( ${Boost_INCLUDE_DIR} )
+ set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -D_CRT_SECURE_NO_WARNINGS /wd4503")
+ link_directories(${Boost_LIBRARY_DIR})
+ else()
+-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -Wall -Wextra -Wformat -Wformat-security -Wconversion -fexceptions -fstrict-aliasing -fstack-protector -fasynchronous-unwind-tables -fno-omit-frame-pointer -DCOMMONAPI_INTERNAL_COMPILATION -D_GLIBCXX_USE_NANOSLEEP -DBOOST_LOG_DYN_LINK -pthread -fvisibility=hidden")
++  add_compile_options(-Wall -Wextra -Wformat -Wformat-security -Wconversion -fexceptions -fstrict-aliasing -fstack-protector -fasynchronous-unwind-tables -fno-omit-frame-pointer -DCOMMONAPI_INTERNAL_COMPILATION -D_GLIBCXX_USE_NANOSLEEP -DBOOST_LOG_DYN_LINK -fvisibility=hidden)
++  set(CMAKE_CXX_STANDARD 17)
+ endif()
+ 
+ SET(MAX_LOG_LEVEL "DEBUG" CACHE STRING "maximum log level")
+@@ -144,7 +148,7 @@ set_target_properties (CommonAPI-SomeIP PROPERTIES VERSION ${COMPONENT_VERSION}
+ target_include_directories(CommonAPI-SomeIP INTERFACE
+     $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/include>
+     $<INSTALL_INTERFACE:${INSTALL_INCLUDE_DIR}>)
+-target_link_libraries(CommonAPI-SomeIP PUBLIC CommonAPI ${VSOMEIP_LIBRARIES})
++target_link_libraries(CommonAPI-SomeIP PUBLIC CommonAPI ${VSOMEIP_LIBRARIES} Threads::Threads)
+ 
+ if (MSVC)
+     target_link_libraries(CommonAPI-SomeIP ws2_32 Rpcrt4)

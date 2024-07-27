@@ -1,0 +1,15 @@
+diff --git a/include/CommonAPI/SomeIP/OutputStream.hpp b/include/CommonAPI/SomeIP/OutputStream.hpp
+index 54b5542..63bf32b 100644
+--- a/include/CommonAPI/SomeIP/OutputStream.hpp
++++ b/include/CommonAPI/SomeIP/OutputStream.hpp
+@@ -149,9 +149,7 @@ public:
+                  break;
+              }
+          } else {
+-             // Default enumeration width is 1 Byte
+-             uint8_t value = static_cast<uint8_t>(_value);
+-             writeValue(value, static_cast<EmptyDeployment *>(nullptr));
++             writeValue(_value.value_, static_cast<EmptyDeployment *>(nullptr));
+          }
+          return (*this);
+     }

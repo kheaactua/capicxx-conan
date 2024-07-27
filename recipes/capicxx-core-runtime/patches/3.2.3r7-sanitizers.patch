@@ -1,0 +1,14 @@
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index d11c24d..ed4273e 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -20,6 +20,9 @@ set(COMMONAPI_API_HEADER_VERSION ${LIBCOMMONAPI_MAJOR_VERSION}.${LIBCOMMONAPI_MI
+ SET(PACKAGE_VERSION "${COMPONENT_VERSION}") # used in *.cmake.in
+ message(STATUS "This is CMake for Common API C++ Version ${COMPONENT_VERSION}.")
+ 
++# Sanitizer
++include(ECMEnableSanitizers OPTIONAL)
++
+ # OS
+ set(DL_LIBRARY "")
+ if (${CMAKE_SYSTEM_NAME} MATCHES "Linux")

@@ -1,0 +1,8 @@
+patches:
+  "3.2.3r8":
+    - patch_file: "patches/3.2.3r8-serialization_enum.patch"
+      patch_description: "Revert setting the default width of a serialized enumeration"
+      patch_type: "conan"
+    - patch_file: "patches/3.2.3r8-sanitizers.patch"
+      patch_description: "Include CMake sanitizers"
+      patch_type: "conan"

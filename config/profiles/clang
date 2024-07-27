@@ -1,0 +1,40 @@
+{% set compiler, version, compiler_exe = detect_api.detect_clang_compiler() %}
+
+[settings]
+os=Linux
+arch=x86_64
+
+compiler={{compiler}}
+# compiler.sanitizer=asan
+# compiler.sanitizer=msan
+# compiler.sanitizer=lsan
+# compiler.sanitizer=tsan
+# compiler.sanitizer=ubsan
+
+compiler.version={{detect_api.default_compiler_version(compiler, version)}}
+compiler.cppstd=gnu17
+compiler.libcxx={{detect_api.detect_libcxx(compiler, version, compiler_exe)}}
+
+# Doesn't seem to work with instrumented functions
+build_type=RelWithDebInfo
+# build_type=Release
+
+[platform_tool_requires]
+ninja/[>=1.12.0]
+cmake/[>=3.23]
+ccache/[>=4.9.0]
+
+[buildenv]
+CC=clang
+CXX=clang++
+CMAKE_CXX_COMPILER_LAUNCHER=ccache
+
+[conf]
+tools.build:compiler_executables={"cpp": "clang++", "c": "clang", "rc": "clang"}
+tools.cmake.cmaketoolchain:generator=Ninja
+
+[options]
+*:verbose_makefile=False
+vsomeip/*:has_buildin_config=False
+
+# vim: commentstring=#\ %s :
